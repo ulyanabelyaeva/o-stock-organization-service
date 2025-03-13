@@ -21,8 +21,8 @@ public class OrganizationController {
         return ResponseEntity.ok(service.findById(organizationId));
     }
 
-    @PutMapping(value="/{organizationId}")
-    public void updateOrganization( @PathVariable("organizationId") String id, @RequestBody Organization organization) {
+    @PutMapping
+    public void updateOrganization(@RequestBody Organization organization) {
         service.update(organization);
     }
 

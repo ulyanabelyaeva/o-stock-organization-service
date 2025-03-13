@@ -8,6 +8,9 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import static com.optimagrowth.organization.utils.UserContext.*;
+import static com.optimagrowth.organization.utils.UserContextHolder.getContext;
+
 @Component
 public class UserContextFilter implements Filter {
 
@@ -18,20 +21,12 @@ public class UserContextFilter implements Filter {
                          ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        UserContextHolder.getContext().setCorrelationId(
-                httpServletRequest.getHeader(
-                        UserContext.CORRELATION_ID));
-        UserContextHolder.getContext().setUserId(
-                httpServletRequest.getHeader(
-                        UserContext.USER_ID));
-        UserContextHolder.getContext().setAuthToken(
-                httpServletRequest.getHeader(
-                        UserContext.AUTH_TOKEN));
-        UserContextHolder.getContext().setOrganizationId(
-                httpServletRequest.getHeader(
-                        UserContext.ORGANIZATION_ID));
-        logger.debug("UserContextFilter Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
-        logger.debug("UserContextFilter Token: {}", UserContextHolder.getContext().getAuthToken());
+        getContext().setCorrelationId(httpServletRequest.getHeader(CORRELATION_ID));
+        getContext().setUserId(httpServletRequest.getHeader(USER_ID));
+        getContext().setAuthToken(httpServletRequest.getHeader(AUTH_TOKEN));
+        getContext().setOrgId(httpServletRequest.getHeader(ORGANIZATION_ID));
+        logger.debug("UserContextFilter Correlation id: {}", getContext().getCorrelationId());
+        logger.debug("UserContextFilter Token: {}", getContext().getAuthToken());
         filterChain.doFilter(httpServletRequest, servletResponse);
     }
 }
